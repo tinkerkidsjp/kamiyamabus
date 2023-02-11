@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<!-- 文字コードをUTF-8に設定 -->
+<meta charset="UTF-8">
+<!-- パソコンとスマホで見た時の文字の大きさを同じにしている -->
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>神山線時刻表検索アプリ</title>
+<script>
+var kudaribusstop = ["阿賀野市役所①","恩田医院(玄関前)","ウオロク水原店","市野山(ウオロク脇)","阿賀野高校前","すぎはら医院前","あがの市民病院(玄関前)","本田医院前","水原駅前通(しゃぼん前)","五頭タクシー前(自販機脇)","元町（関口商店前）","水原駅自転車置場前","杉並","新橋（地蔵様前）","南町（国道沿い）","水原商工会館前","水原下町(空き地前)","水原上町(おんこ茶屋前)","北本町(ムラヤマ燃料前)","天神堂(菅原神社前)","天神堂公会堂前","天神堂(涌井商店前)","千原(旧バス停)","千原","沖通","沖通センター前","豆田","豆田(共同作業場前)","船居・沖ノ館(消防車庫前)","上飯塚（交差点）","神山駅前","こばやし歯科医院前(道路反対側)","上飯塚","上飯塚（船場橋脇）","榎センター前","上高田(旧松川商店前)","高田(JA倉庫前)","藤屋(神社脇)","飯山新(神社前)","飯山新(佐藤モータース前)","中ノ通(神社裏)","しらとり団地","上高田(旧バス停)","こばやし歯科医院前","神山駅前","本明(石上神社前)","本明・島田センター前","島田","沖(神社前)","神山郵便局前","高齢者コミセン前","上西野(山倉方向十字路)","上高関センター前","熊堂(JA倉庫前)","上蔵野(音田商店前)","長起","下一分","下一分（下公園前）","下一分（上公園前）","村岡公会堂前","滝沢センター前","沢口センター前","上一分","堤・小栗山センター前","笹岡(渡辺建築近く交差点)","笹岡(木村屋パン店前)","塚田公会堂前","下山屋(神明宮前)","発久(市村自動車前)","笹岡(渡辺スタンド前)","山崎センター前","永田医院前","笹神中学校前","笹神支所","阿賀野市役所"];
+var kudari1 = ["955","957","959","959","-","1004","1006","1007","1008","-","-","1009","1010","1011","1012","1013","1013","1014","1015","※1017","※1017","-","-","※1018","※1018","※1019","※1019","※1019","※1020","※1020","-","1021","※1023","※1024","※1024","※1025","※1028","※1030","※1031","※1031","※1032","※1036","※1037","※1039","-","※1040","※1041","※1042","※1043","※1045","※1046","※1047","※1048","※1049","※1051","※1052","※1053","※1054","※1055","※1057","※1058","※1100","※1101","※1102","※1103","※1103","-","-","-","※1104","※1105","※1105","-","※1106","1114"];
+var kudari2 = ["1115","1117","1119","1119","1123","1125","1130","1131","1132","-","1133","-","-","-","-","1134","1134","1135","1136","※1138","※1139","-","-","※1140","1142","1143","1144","1145","1147","1148","1150","1150","1152","1153","1153","1154","1157","1159","1200","1200","1201","1204","1205","1207","1207","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","※1210","※1211","※1212","※1213","※1214","※1214","-","1215","-"];
+var kudari3 = ["1125","1127","1129","1129","1133","1135","1140","1141","1142","-","-","1143","1144","1145","1146","1147","1147","1148","1149","-","-","1151","1152","-","-","-","-","-","-","-","1154","1154","-","-","-","-","-","-","-","-","-","-","-","-","-","※1156","※1157","※1158","※1159","※1201","※1203","※1204","※1205","※1206","※1208","※1209","※1210","※1211","※1212","※1214","※1215","※1217","※1218","※1219","※1220","※1220","-","-","-","※1221","※1222","※1222","-","1223","-"];
+var kudari4 = ["1440","-","-","-","1441","-","1443","1444","1445","-","1446","-","-","-","-","1447","1447","1448","1449","-","-","1451","1452","-","-","-","-","-","-","-","-","1453","-","-","-","-","-","-","-","-","※1456","-","-","-","-","※1459","※1500","※1501","※1502","※1504","1505","-","※1507","※1508","※1510","※1511","※1512","※1513","※1514","※1516","※1517","-","-","-","-","-","-","-","-","-","-","-","-","1523","-"];
+var kudari5 = ["1540","-","-","-","1542","-","1544","1545","1545","1546","1546","-","-","-","-","1547","1547","1548","1549","-","-","※1551","※1552","-","-","-","-","-","-","-","1554","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","※1557","1558","","※1600","※1601","※1603","※1604","※1605","※1606","※1607","※1609","※1610","-","-","-","-","-","-","-","-","※1614","※1615","※1615","1616","1620","-"];
+
+// select要素にoptionを追加している
+function addOption() {
+    // kudaribusstopの長さ分繰り返す（最初に変数iを0にする。iがkudaribusstopの長さより小さい間繰り返す。iを１ずつ増やす）
+    for (var i = 0; i < kudaribusstop.length; i++) {
+        // 変数selectにnoboriというidの要素を入れる
+        var select1 = document.getElementById("departure");
+        var select2 = document.getElementById("destination");
+        // 変数optionに空のoption要素を作っていれる
+        var option1 = document.createElement("option");
+        var option2 = document.createElement("option");
+        // option要素のテキストをnoboribusstopのi番目に設定する
+        option1.text = kudaribusstop[i];
+        option2.text = kudaribusstop[i];
+        // option要素のvalueをiに設定する（一回目は0）
+        option1.value = i;
+        option2.value = i;
+        // selectタグの子要素にoptionタグを追加する
+        select1.appendChild(option1);
+        select2.appendChild(option2);
+    }
+    // 時間のoptionを追加している
+    for (var i = 0; i < 24; i++) {
+        var select3 = document.getElementById("hour");
+        var option3 = document.createElement("option");
+        option3.text = i;
+        option3.value = i;
+        select3.appendChild(option3);
+    }
+    // 分の十の位を追加している
+    for (var i = 0; i < 6; i++) {
+        var select4 = document.getElementById("minute10");
+        var option4 = document.createElement("option");
+        option4.text = i;
+        option4.value = i;
+        select4.appendChild(option4);
+    }
+    // 分の一の位を追加している
+    for(var i = 0; i < 10; i++) {
+        var select5 = document.getElementById("minute1");
+        // 変数option5に空のoption要素を作って入れる
+        var option5 = document.createElement("option");
+        option5.text = i;
+        option5.value = i;
+        select5.appendChild(option5);
+    }
+}
+
+var answered = false;
+
+function checkBus(diagram, departure, destination, selectTime, checkValue) {
+    // もし、出発地または到着地の時刻表が、-だった場合、あるいは出発地の時刻表の１文字目が※だったら
+    if (diagram[departure] == '-' || diagram[destination] == '-' || diagram[departure].slice(0,1) == '※') {
+        return;
+    } else {
+        // 到着時刻に※がついていれば※を取る
+        if (diagram[destination].slice(0,1) == '※') {
+            if (diagram[destination].length == 4) {
+                diagram[destination] = diagram[destination].slice(1,4);
+            } else {
+                diagram[destination] = diagram[destination].slice(1,5);
+            }
+        }
+        if (checkValue == '到着') {
+            // 指定した時刻が到着時間よりも前だったら
+            if (Number(selectTime) < Number(diagram[destination])) {
+                return;
+            }
+        } else {
+            // 指定した時刻が出発時間よりも後だったら
+            if (Number(selectTime) > Number(diagram[departure])) {
+                return;
+            }
+        }
+        // 指定した時刻が到着時間より後だったら
+        document.getElementById('result11').textContent = '出発';
+        document.getElementById('result12').textContent =  kudaribusstop[departure];
+        if (diagram[departure].length == 3) {
+            document.getElementById('result13').textContent =  diagram[departure].slice(0,1) + ':' + diagram[departure].slice(1,3);
+        } else {
+            document.getElementById('result13').textContent =  diagram[departure].slice(0,2) + ':' + diagram[departure].slice(2,4);
+        }
+          
+        document.getElementById('result21').textContent = '到着';
+        document.getElementById('result22').textContent =  kudaribusstop[destination];
+        if (diagram[destination].length == 3) {
+            document.getElementById('result23').textContent =  diagram[destination].slice(0,1) + ':' + diagram[destination].slice(1,3);
+        } else {
+            document.getElementById('result23').textContent =  diagram[destination].slice(0,2) + ':' + diagram[destination].slice(2,4);
+        }
+        
+        answered = true;
+    }
+}
+
+function search() {
+    // departureSelectという変数を作って、departureセレクトボックスを取得。
+    var departureSelect = document.getElementById('departure');
+    // 変数departuteに、選択されているバス停の番号を取得
+    var departure = departureSelect.value;
+    var destinationSelect = document.getElementById('destination');
+    var destination = destinationSelect.value;
+    // departureがdestinationより大きかった場合指定した方向では検索できませんと表示する
+    if (departure > destination) {
+        alert("指定した方向では検索出来ません")
+        return;
+    }
+    var hourSelect = document.getElementById('hour');
+    var hour = hourSelect.value;
+    var minute10Select = document.getElementById('minute10');
+    var minute10 = minute10Select.value;
+    var minute1Select = document.getElementById('minute1');
+    var minute1 = minute1Select.value;
+    var selectTime = hour + minute10 + minute1;
+    //　変数orRadioに、ラジオボタンインプットを取得。
+    var orRadio = document.getElementsByName('or');
+    var checkValue = '';
+    // ラジオボタンの数だけ繰り返す。
+    for (var i = 0; i < 2; i++) {
+        // もしラジオボタンがチェックされていたら
+        if (orRadio.item(i).checked){
+            // 変数checkValueに選択されたボタンのvalueを入れる。
+            checkValue = orRadio.item(i).value;
+        }
+    }
+    if (checkValue == '到着') {
+        // 下りの５番目のバスから調べる
+        checkBus(kudari5, departure, destination, selectTime, checkValue);
+        // もし、もう答えていたら
+        if (answered == true) {
+            //　戻る(これ以上は調べない)
+            return;
+        }
+        checkBus(kudari4, departure, destination, selectTime, checkValue);
+        if (answered == true) {
+            return;
+        }
+        checkBus(kudari3, departure, destination, selectTime, checkValue);
+        if (answered == true) {
+            return;
+        }
+        checkBus(kudari2, departure, destination, selectTime, checkValue);
+        if (answered == true) {
+            return;
+        }
+        checkBus(kudari1, departure, destination, selectTime, checkValue);
+        // 5本調べてもanswertdがtrueにならなかったら
+        if (answered == false) {
+            alert('指定したバス停及び時間で利用できるバスはありません');
+        }
+    }
+    if (checkValue == '出発') {
+        checkBus(kudari1, departure, destination, selectTime, checkValue);
+        if (answered == true) {
+            return;
+        }
+        checkBus(kudari2, departure, destination, selectTime, checkValue);
+        if(answered == true) {
+            return;
+        }
+        checkBus(kudari3, departure, destination, selectTime, checkValue);
+        if(answered == true) {
+            return;
+        }
+        checkBus(kudari4, departure, destination, selectTime, checkValue);
+        if(answered == true) {
+            return;
+        }
+        checkBus(kudari5, departure, destination, selectTime, checkValue);
+        if (answered == false)  {
+            alert('指定したバス停及び時間で使用できるバスはありません');
+        }
+    }
+}
+</script>
+<style>
+    td {
+        /* 内側の余白を設定している*/
+        padding: 10px;
+    }
+    body {
+        text-align: center;
+        font-size: 20px;
+    }
+    select {
+        font-size: 20px;
+    }
+    button {
+        font-size: 20px;
+    }
+    table {
+        margin: auto;
+    }
+</style>
+</head>
+<!-- このページが読み込まれたら、addOptionという関数を実行する -->
+<body onload="addOption()">
+    <h1>神山線下り</h1>
+    <p>出発するバス停を選んでください</p>
+    <select id="departure"></select>
+    <p>目的地のバス停を選んでください</p>
+    <select id="destination"></select>
+    <p>時間を選んでください</p>
+    <select id="hour"></select> 時 <select id="minute10"></select><select id="minute1"></select> 分
+    <p>
+        <input type="radio" name="or" value="出発"> 出発
+        <input type="radio" name="or" value="到着" checked> 到着
+    </p>
+    <p>
+        <button onclick="search()">検索</button>
+    </p>
+    <table>
+        <tr>
+            <td id="result11"></td>
+            <td id="result12"></td>
+            <td id="result13"></td>
+        </tr>
+        <tr>
+            <td id="result21"></td>
+            <td id="result22"></td>
+            <td id="result23"></td>
+        </tr>
+    </table>
+    <a href="index.html"><button>戻る</button></a>
+</body>
+</html>
